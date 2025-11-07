@@ -1,11 +1,24 @@
 import { Elysia } from "elysia";
 import NotionController from "./controllers/NotionController";
+import UnauthorizedMiddleware from "./middlewares/UnauthorizedMiddleware";
 
 const app = new Elysia()
-  .get("/", async () => {
+  .get("/health", ({ request, status }) => {
+    const isUnauthorized = new UnauthorizedMiddleware().handle(request);
+    if (isUnauthorized) return status(401, "Unauthorized");
+
+    return "Healthy";
+  })
+  .get("/", async ({ request, status }) => {
+    const isUnauthorized = new UnauthorizedMiddleware().handle(request);
+    if (isUnauthorized) return status(401, "Unauthorized");
+
     return await NotionController.index();
   })
-  .post("/scores", async ({ body }) => {
+  .post("/scores", async ({ body, request, status }) => {
+    const isUnauthorized = new UnauthorizedMiddleware().handle(request);
+    if (isUnauthorized) return status(401, "Unauthorized");
+
     const { pseudo, score } = body as { pseudo: string; score: number };
     return await NotionController.create(pseudo, score);
   })
