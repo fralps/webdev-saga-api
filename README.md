@@ -7,6 +7,11 @@ bun create elysia ./elysia-example
 ```
 
 ## Development
+Install dependencies:
+```bash
+bun install
+```
+
 To start the development server run:
 ```bash
 bun run dev
