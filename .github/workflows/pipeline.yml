@@ -1,0 +1,23 @@
+name: CI pipeline
+
+on:
+  push: {}
+  pull_request:
+    types: [opened, reopened]
+
+jobs:
+  build:
+    name: 🚀 Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: 🔧 Install modules
+        run: bun install
+
+      - name: ⚙️ Build app
+        run: bun run build
