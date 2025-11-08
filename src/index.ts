@@ -4,6 +4,7 @@ import UnauthorizedMiddleware from "./middlewares/UnauthorizedMiddleware";
 
 const app = new Elysia()
   .get("/health", ({ request, status }) => {
+    console.log("Health check");
     const isUnauthorized = new UnauthorizedMiddleware().handle(request);
     if (isUnauthorized) return status(401, "Unauthorized");
 
